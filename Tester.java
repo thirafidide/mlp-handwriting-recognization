@@ -5,11 +5,11 @@ public class Tester {
 
 	public static final int NUMBER_OF_TEST = 10;
 	public static final int ITERATION_LIMIT = 500;
-	public static final int NUMBER_OF_GROUP = 10;
-
 
 	public static double LEARNING_RATE = 0.1;
 	public static int N_HIDDEN_LAYER = 2 * 675 + 1;
+	public static int DATA_USED = 1000;
+	public static int PERCENTAGE_TO_VALID = 10;
 
 	public static void main(String[] args) {
 
@@ -21,8 +21,10 @@ public class Tester {
 			double[][] normalizedData = new double[tempPattern.size()][tempPattern.get(0).size()];
 			double[][] normalizedDesiredOutput = new double[tempOutput.size()][10];
 
-			final int N_HIDDEN_LAYER = Integer.parseInt(args[0]);
-			final double LEARNING_RATE = Double.parseDouble(args[1]);
+			N_HIDDEN_LAYER = Integer.parseInt(args[0]);
+			LEARNING_RATE = Double.parseDouble(args[1]);
+			DATA_USED = Integer.parseInt(args[2]);
+			PERCENTAGE_TO_VALID = Integer.parseInt(args[3]);
 
 			for (int i=0;i<tempPattern.size();i++) {
 
@@ -51,29 +53,31 @@ public class Tester {
 			mlp.setLearningRate(LEARNING_RATE);
 
 			train(mlp, patterns, desiredOutput);
-
 		}
 	}
 
 	public static void train(MLP mlp, double[][] patterns, double[][] desiredOutput) {
 
-		int rand = (new Random()).nextInt(NUMBER_OF_GROUP);
-		int patternPerGroup = patterns.length / NUMBER_OF_GROUP;
+		int numberOfGroup = patterns.length / DATA_USED;
+		int rand = (new Random()).nextInt(numberOfGroup);
 
-		int startGap = rand * patternPerGroup;
+		int startGap = rand * DATA_USED;
 
-		int rand2 = (new Random()).nextInt(10);
+		int dataToValid = (DATA_USED * PERCENTAGE_TO_VALID) / 100;
+		int groupToValid = DATA_USED / dataToValid;
+		int rand2 = (new Random()).nextInt(groupToValid);
 
+		System.out.println("per: " + dataToValid);
 		for (int i=0;i<ITERATION_LIMIT;i++) {
 
-			for (int j=startGap;j<startGap+patternPerGroup;j++) {
-				if (((j % 1000) / 100) == rand2) continue;
+			for (int j=startGap;j<startGap+DATA_USED;j++) {
+				if (((j % DATA_USED) / dataToValid) == rand2) continue;
 				mlp.train(patterns[j], desiredOutput[j]);
 			}
 
 			int err = 0;
-			for (int j=startGap;j<startGap+patternPerGroup;j++) {
-				if (((j % 1000) / 100) != rand2) continue;
+			for (int j=startGap;j<startGap+DATA_USED;j++) {
+				if (((j % DATA_USED) / dataToValid) != rand2) continue;
 
 				double[] output = mlp.passNet(patterns[j]);
 				err += countError(output, desiredOutput[j]);
