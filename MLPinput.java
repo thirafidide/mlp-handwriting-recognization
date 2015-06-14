@@ -11,6 +11,7 @@ import java.io.IOException;
 public class MLPinput{
     public static ArrayList<Integer> arrLabel = new ArrayList<Integer>(); //data label
     public static ArrayList<ArrayList> arrData = new ArrayList<ArrayList>(); //data pixel array 2D
+    public static ArrayList<Boolean> arrIsDiff = new ArrayList<Boolean>();
 
     public static void main( String[] args) {
       
@@ -22,7 +23,7 @@ public class MLPinput{
             String[] arrInput;
             String currentLine; 
             while((currentLine = br.readLine()) != null){
-                System.out.println(currentLine);
+                //System.out.println(currentLine);
                 ArrayList<Integer> arrInnerData = new ArrayList<Integer>();
                 arrInput = currentLine.split(",");
                 for(int ii =0; ii<arrInput.length; ii++){
@@ -33,6 +34,9 @@ public class MLPinput{
                 }
                 arrData.add(arrInnerData);
             }
+            arrData = preprocessing(arrData);
+            printData(arrData);
+
     
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,11 +57,52 @@ public class MLPinput{
 
     //buat debug print array data
     private static void printData(ArrayList<ArrayList> arr){
-        for(Integer row : arr){
-            for(Integer col: row)
+        for(ArrayList<Integer> row : arr){
+            for(Integer col : row)
                 System.out.print(col+" ");
             System.out.println();
         }
+    }
+
+    private static ArrayList preprocessing(ArrayList<ArrayList> arr){
+        int limit = arr.get(0).size();
+
+        for(int i = 0; i < limit; i++){
+            arrIsDiff.add(checkColumn(arr, i));
+        }
+
+        ArrayList<ArrayList> arrNewData = new ArrayList<ArrayList>(); //data pixel array 2D
+        for(int i = 0; i < limit; i++){
+            ArrayList<Integer> row  = arr.get(i);
+            
+            ArrayList<Integer> newRow = new ArrayList<Integer>();
+            for (int j = 0; j < row.size(); j++){
+                if(arrIsDiff.get(j)){
+                    newRow.add(row.get(j));
+                }
+            }
+            arrNewData.add(newRow);   
+        }
+        //printData(arrNewData);
+        return arrNewData;
+    }
+
+    private static void deleteColumn(ArrayList<ArrayList> arr, Integer col){
+        for(ArrayList row : arr){
+           arr.remove(col);
+        }
+    }
+
+    private static boolean checkColumn(ArrayList<ArrayList> arr, Integer col){
+        boolean isDiff = false;
+        int currentValue = (int)arr.get(0).get(col);
+        for(ArrayList row : arr){
+            if(currentValue != (int)row.get(col)){
+                isDiff = true;
+                break;
+            }   
+        }
+        return isDiff;
     }
 
 }
