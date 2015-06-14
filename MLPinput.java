@@ -33,8 +33,8 @@ public class MLPinput{
                 }
                 arrData.add(arrInnerData);
             }
+            //System.out.println("Kolom Awal:" +arrData.get(0).size());
             arrData = preprocessing(arrData);       
-    
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
