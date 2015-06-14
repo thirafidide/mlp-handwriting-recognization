@@ -3,4 +3,4 @@ Handwriting recognization using Multilayer Perceptron
 
 # Testing
 		javac -g *.java
-		java Tester
+		java Tester <n hidden layer> <>

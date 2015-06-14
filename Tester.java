@@ -7,8 +7,8 @@ public class Tester {
 	public static final int ITERATION_LIMIT = 500;
 
 
-	public static final double LEARNING_RATE = 0.1;
-	public static final int N_HIDDEN_LAYER = 2 * 675 + 1;
+	public static double LEARNING_RATE = 0.1;
+	public static int N_HIDDEN_LAYER = 2 * 675 + 1;
 
 	public static void main(String[] args) {
 
@@ -19,6 +19,8 @@ public class Tester {
 			double[][] normalizedData = new double[tempPattern.size()][tempPattern.get(0).size()];
 			double[][] normalizedDesiredOutput = new double[tempOutput.size()][10];
 
+			final int N_HIDDEN_LAYER = Integer.parseInt(args[0]);
+			final double LEARNING_RATE = Double.parseDouble(args[1]);
 
 			for (int i=0;i<tempPattern.size();i++) {
 
@@ -67,17 +69,14 @@ public class Tester {
 	public static void train(MLP mlp, double[][] patterns, double[][] desiredOutput, int numberOfDataEachTest, int iteration, boolean isUsingIteration) {
 		if (isUsingIteration) {
 			for (int i=0;i<ITERATION_LIMIT;i++) {
-				double err = 0;
+				int err = 0;
 				for (int j=0;j<patterns.length;j++) {
 					if (j/numberOfDataEachTest == iteration) continue;
 					
 					double[] output = mlp.train(patterns[j], desiredOutput[j]);
-
-					//System.out.println(output[1] + " " + desiredOutput[j][0]);
-					err += evaluateError(output, desiredOutput[j]);
+					err += countError(output, desiredOutput[j]);
 				}
-				err /= patterns.length;
-				System.out.println(err);
+				System.out.println(i + "," + err);
 			}
 		}
 		else {
@@ -105,5 +104,15 @@ public class Tester {
 		return Math.sqrt(res);
 	}
 
+	public static int countError(double[] output, double[] desiredOutput) {
+		int res = 0;
+		for (int i=0;i<desiredOutput.length;i++) {
+			if (stepFun(desiredOutput[i]) != stepFun(output[i+1])) res = 1;
+		}
+		return res;
+	} 
 
+	public static int stepFun(double num) {
+		return (num >= 0.5) ? 1 : 0;
+	}
 }
