@@ -2,5 +2,5 @@
 Handwriting recognization using Multilayer Perceptron
 
 # Testing
-		javac -g Mlp.java
-		java Mlp
+		javac -g *.java
+		java Tester
