@@ -59,25 +59,34 @@ public class Tester {
 	public static void train(MLP mlp, double[][] patterns, double[][] desiredOutput) {
 
 		int numberOfGroup = patterns.length / DATA_USED;
-		int rand = (new Random()).nextInt(numberOfGroup);
 
-		int startGap = rand * DATA_USED;
+		
 
 		int dataToValid = (DATA_USED * PERCENTAGE_TO_VALID) / 100;
-		int groupToValid = DATA_USED / dataToValid;
-		int rand2 = (new Random()).nextInt(groupToValid);
+		
 
-		System.out.println("per: " + dataToValid);
+		//System.out.println("per: " + dataToValid);
 		for (int i=0;i<ITERATION_LIMIT;i++) {
+
+			int rand = (new Random()).nextInt(numberOfGroup);
+			int startGap = rand * DATA_USED;
+
+			int groupToValid = DATA_USED / dataToValid;
+			int rand2 = (new Random()).nextInt(groupToValid);
+			int validGap = startGap+(rand2*dataToValid);
 
 			for (int j=startGap;j<startGap+DATA_USED;j++) {
 				if (((j % DATA_USED) / dataToValid) == rand2) continue;
+				
 				mlp.train(patterns[j], desiredOutput[j]);
 			}
 
+			//System.out.println(startGap + " " + DATA_USED);
+			//System.out.println(validGap + " " + dataToValid);
+			//System.out.println(validGap + " " + startGap + " " + rand2);
+
 			int err = 0;
-			for (int j=startGap;j<startGap+DATA_USED;j++) {
-				if (((j % DATA_USED) / dataToValid) != rand2) continue;
+			for (int j=validGap;j<validGap+dataToValid;j++) {
 
 				double[] output = mlp.passNet(patterns[j]);
 				err += countError(output, desiredOutput[j]);
