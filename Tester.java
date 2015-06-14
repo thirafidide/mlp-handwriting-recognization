@@ -33,7 +33,7 @@ public class Tester {
 
 				normalizedDesiredOutput[i][output] = 1;
 				for (int j=0;j<pattern.size();j++) {
-					normalizedData[i][j] = pattern.get(j);
+					normalizedData[i][j] = pattern.get(j) / 255.0;
 				}
 			}
 			
@@ -59,31 +59,27 @@ public class Tester {
 	public static void train(MLP mlp, double[][] patterns, double[][] desiredOutput) {
 
 		int numberOfGroup = patterns.length / DATA_USED;
-
-		
-
 		int dataToValid = (DATA_USED * PERCENTAGE_TO_VALID) / 100;
 		
+		Random random = new Random();
+	
 
-		//System.out.println("per: " + dataToValid);
+		System.out.println("error per: " + dataToValid);
 		for (int i=0;i<ITERATION_LIMIT;i++) {
 
-			int rand = (new Random()).nextInt(numberOfGroup);
+			int rand = random.nextInt(numberOfGroup);
 			int startGap = rand * DATA_USED;
 
 			int groupToValid = DATA_USED / dataToValid;
-			int rand2 = (new Random()).nextInt(groupToValid);
-			int validGap = startGap+(rand2*dataToValid);
+			int rand2 = random.nextInt(groupToValid);
+			int validGap = startGap+(rand2*dataToValid);	
 
 			for (int j=startGap;j<startGap+DATA_USED;j++) {
-				if (((j % DATA_USED) / dataToValid) == rand2) continue;
-				
+				if ((j % DATA_USED) / dataToValid == rand2) continue;
 				mlp.train(patterns[j], desiredOutput[j]);
 			}
 
-			//System.out.println(startGap + " " + DATA_USED);
-			//System.out.println(validGap + " " + dataToValid);
-			//System.out.println(validGap + " " + startGap + " " + rand2);
+			//System.out.println(startGap + " " + validGap + " " + DATA_USED);
 
 			int err = 0;
 			for (int j=validGap;j<validGap+dataToValid;j++) {
