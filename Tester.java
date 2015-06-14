@@ -63,7 +63,6 @@ public class Tester {
 		int startGap = rand * patternPerGroup;
 
 		int rand2 = (new Random()).nextInt(10);
-		System.out.println(patternPerGroup + " " + startGap);
 
 		for (int i=0;i<ITERATION_LIMIT;i++) {
 
