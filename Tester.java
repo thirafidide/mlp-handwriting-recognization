@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Tester {
 
 	public static final int NUMBER_OF_TEST = 10;
-	public static final double TOL = 0.01;
 	public static final int ITERATION_LIMIT = 500;
+	public static final int NUMBER_OF_GROUP = 10;
 
 
 	public static double LEARNING_RATE = 0.1;
@@ -13,6 +14,7 @@ public class Tester {
 	public static void main(String[] args) {
 
 		try {
+			System.out.println("Reading file...");
 			ArrayList[] dataset = MLPinput.read("dataset/d5problem-original.dataset.csv");
 			ArrayList<ArrayList> tempPattern = dataset[1];
 			ArrayList<Integer> tempOutput = dataset[0];
@@ -33,65 +35,51 @@ public class Tester {
 				}
 			}
 			
-			crossValidation(normalizedData, normalizedDesiredOutput, NUMBER_OF_TEST);
+			System.out.println("Doing cross validation...");
+			crossValidation(normalizedData, normalizedDesiredOutput);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void crossValidation(double[][] patterns, double[][] desiredOutput, int numberOfTest) {
+	public static void crossValidation(double[][] patterns, double[][] desiredOutput) {
 
-		int numberOfDataEachTest = patterns.length / numberOfTest;
-
-		for (int i=0;i<numberOfTest;i++) {
+		for (int i=0;i<NUMBER_OF_TEST;i++) {
 
 			MLP mlp = new MLP(patterns[0].length, N_HIDDEN_LAYER, desiredOutput[0].length);
 			mlp.setLearningRate(LEARNING_RATE);
 
-
-			// training
-			train(mlp, patterns, desiredOutput, numberOfDataEachTest, i, true);
-
-			// validation
-			double validationError = 0;
-			for (int j=numberOfDataEachTest*i;j<numberOfDataEachTest*i+numberOfDataEachTest;j++) {
-				double[] output = mlp.passNet(patterns[j]);
-
-				validationError += evaluateError(output, desiredOutput[j]);
-			}
-			validationError /= numberOfDataEachTest;
-			System.out.println("Validation error: " + validationError);
+			train(mlp, patterns, desiredOutput);
 
 		}
 	}
 
-	public static void train(MLP mlp, double[][] patterns, double[][] desiredOutput, int numberOfDataEachTest, int iteration, boolean isUsingIteration) {
-		if (isUsingIteration) {
-			for (int i=0;i<ITERATION_LIMIT;i++) {
-				int err = 0;
-				for (int j=0;j<patterns.length;j++) {
-					if (j/numberOfDataEachTest == iteration) continue;
-					
-					double[] output = mlp.train(patterns[j], desiredOutput[j]);
-					err += countError(output, desiredOutput[j]);
-				}
-				System.out.println(i + "," + err);
+	public static void train(MLP mlp, double[][] patterns, double[][] desiredOutput) {
+
+		int rand = (new Random()).nextInt(NUMBER_OF_GROUP);
+		int patternPerGroup = patterns.length / NUMBER_OF_GROUP;
+
+		int startGap = rand * patternPerGroup;
+
+		int rand2 = (new Random()).nextInt(10);
+		System.out.println(patternPerGroup + " " + startGap);
+
+		for (int i=0;i<ITERATION_LIMIT;i++) {
+
+			for (int j=startGap;j<startGap+patternPerGroup;j++) {
+				if (((j % 1000) / 100) == rand2) continue;
+				mlp.train(patterns[j], desiredOutput[j]);
 			}
-		}
-		else {
-			double err = Double.POSITIVE_INFINITY;
-			while (err > TOL) {
-				err = 0;
-				for (int j=0;j<patterns.length;j++) {
-					if (j/numberOfDataEachTest == iteration) continue;
-					
-					double[] output = mlp.train(patterns[j], desiredOutput[j]);
-					err += evaluateError(output, desiredOutput[j]);
-				}
-				err /= patterns.length;
-				System.out.println(err);
+
+			int err = 0;
+			for (int j=startGap;j<startGap+patternPerGroup;j++) {
+				if (((j % 1000) / 100) != rand2) continue;
+
+				double[] output = mlp.passNet(patterns[j]);
+				err += countError(output, desiredOutput[j]);
 			}
+			System.out.println(i + "," + err);
 		}
 	}
 

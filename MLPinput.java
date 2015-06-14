@@ -76,7 +76,7 @@ public class MLPinput{
         }
 
         ArrayList<ArrayList> arrNewData = new ArrayList<ArrayList>(); //data pixel array 2D
-        for(int i = 0; i < limit; i++){
+        for(int i = 0; i < arr.size(); i++){
             ArrayList<Integer> row  = arr.get(i);
             
             ArrayList<Integer> newRow = new ArrayList<Integer>();
