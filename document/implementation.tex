@@ -1,5 +1,6 @@
 \section{Implementasi}
-Implementasi program dibagi menjadi kelas untuk membangun model multilayer perceptron(MLP) dan tools MLP.java yang berisi abstraksi MLP.\\ 
+Implementasi program dibagi menjadi beberapa bagian, terdapat kelas untuk mengolah data input, membangun model multilayer perceptron(MLP), dan tools MLP.java yang berisi abstraksi MLP.\\
+Pada bagian yang mengolah data input, program membaca file .csv dan melakukan seleksi terhadap kolom-kolom yang digunakan saja (\textit{dimension reduction}). Kolom-kolom yang nilainya sama untuk setiap baris dihapus pada proses ini.\\
 Tools yang berisi abstraksi MLP terdapat pada file MLP.java bersumber pada http://physionet.org/challenge/2010/sources/Luiz-Silva/MLP.java.\\
 Kelas untuk membangun model MLP, diimplementasi pada Tester.java. Kelas ini menerima argumen jumlah \textit{hidden layer} dan \textit{learning rate} yang digunakan untuk membangun model MLP. Kedua argumen ini juga yang nantinya digunakan pada eksperimen untuk membangun model MLP.
 \lipsum
