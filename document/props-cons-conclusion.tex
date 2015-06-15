@@ -1,30 +1,22 @@
 \section{Kelebihan dan Kekurangan}
-\lipsum
+Permasalahan utama dalam klasifikasi adalah sulitnya memngklasifikasikan data non-linear. 
+Salah satu contoh masalahnya adalah klasifikasi gerbang XOR. 
+\textit{Neural Network} dapat menyelesaikan masalah klasifikasi non-linear tersebut karena \textit{Neural Network} menggunakan bantuan layer tambahan dalam proses klasifikasinya.
+\textit{Neural Network} memiliki sifat generik, artinya untuk satu algoritma dapat menyelesakan masalah untuk beberapa jenis training data.
+
+Salah satu persoalan utama \textit{Neural Network} adalah sulitnya implementasi dan interpretasi. 
+Namun saat ini sudah banyak perangkat lunak yang menyediakan \textit{built-in} untuk menyelesaikan masalah dengan \textit{Neural Network}.
+Dalam penggunaan \textit{Neural Network} ditemukan masalah sulitnya menentukan arsitektur dari jaringan, seperti menentukan banyaknya layer, banyaknya node pada layer.
+Pemilihan banyak node pada layer yang terlalu sedikit akan mengakibatkan \textit{backpagation} tidak mendekati nilai minimum saat training.
+Terlalu banyak node pada layer dapat menyebabkan \textit{over fitting} hasil training data dan mengakibatkan hasil generalisasi yang buruk.
+Masalah terbesar dalam \textit{Neural Network} adalah kompleksitas waktu yang sangat tinggi. 
+Kompleksitas \textit{backpropagation} tinggi dikarenakan \textit{curse of dimentionality}, jika dimensi data bertmbah, maka jumlah data training yang diperlukan juga signifikan bertambah.
+
 
 \section{Kesimpulan}
 
 	\subsection{Ringkasan}
-	\lipsum[1]
+	\lipsum
 
 	\subsection{Arahan Kedapan}
 	\lipsum[1]
-
-
-pros 
-	dapat memecahkan pasalah yang kompleks, nonlinear
-	dapat beradaptasi dengan beberapa jenis training data
-
-cons 
-sulit diimplementasi dan diinterpretasi
-	tersedia software yang menyediakan built-in solusi.
-sulit menentukan aritektur dari jaringan
-	banyaknya layer
-	banyaknya node pada layer
-		tergantung kepada kompleksitas dari input dan output mapping. 
-		terlalu sedikit backpropagation algorithm gagal menuju konvegen minimun saat training 
-		terlalu banyak overfitting hasil training data dan performa generalisasi buruk
-kompleksitas backpropagation tinggi (curse of dimentionality)
-	jika dimensi data bertambah, maka jumlah data training yang diperlukan juga signifikan bertambah
-
-
-	http://www.researchgate.net/profile/Stephen_Dorling/publication/263416087_Artificial_neural_networks_(the_multilayer_perceptron)-a_review_of_applications_in_the_atmospheric_sciences_-_application_for_wind_retrieval_from_spaceborne_scatterometer_data/links/00b495364b91edd43a000000.pdf
