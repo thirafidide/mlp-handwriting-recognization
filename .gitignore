@@ -148,3 +148,6 @@ sympy-plots-for-*.tex/
 
 # Plot
 *.dat
+
+# HTML markdown build
+*.html

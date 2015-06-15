@@ -33,8 +33,7 @@ public class MLPinput{
                 }
                 arrData.add(arrInnerData);
             }
-            //System.out.println("Kolom Awal:" +arrData.get(0).size());
-            arrData = preprocessing(arrData);       
+            arrData = preprocessing(arrData);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -76,7 +75,11 @@ public class MLPinput{
         }
 
         ArrayList<ArrayList> arrNewData = new ArrayList<ArrayList>(); //data pixel array 2D
+<<<<<<< HEAD
         for(int i = 0; i < limit; i++){
+=======
+        for(int i = 0; i < arr.size(); i++){
+>>>>>>> 166a3d4100919420d47c3797d63060f931e59b21
             ArrayList<Integer> row  = arr.get(i);
             
             ArrayList<Integer> newRow = new ArrayList<Integer>();
